@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "lite-server"
+    "start": "lite-server",
+    "ts-compile":"tsc --w"
   },
   "keywords": [
     "typescript",
@@ -15,5 +16,8 @@
   "license": "ISC",
   "devDependencies": {
     "lite-server": "^2.5.4"
+  },
+  "dependencies": {
+    "typescript": "^4.7.4"
   }
 }
