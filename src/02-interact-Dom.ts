@@ -45,7 +45,7 @@ class ProjectInput1{
         */
         this.titleInputElement = this.element.querySelector('#title') as HTMLInputElement;
         this.descriptionInputElement = this.element.querySelector('#description') as HTMLInputElement;
-        this.peopleInputElement = this.element.querySelector('#title') as HTMLInputElement;
+        this.peopleInputElement = this.element.querySelector('#people') as HTMLInputElement;
 
         /* 07 - 
         Now we just need to make sure that before we attach, I also call configure and 
