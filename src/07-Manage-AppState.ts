@@ -141,7 +141,7 @@ interface Validatable {
     max?:number;
 }
 
-function validate2(validatableInput:Validatable){
+function validate3(validatableInput:Validatable){
     let isValid = true;
 
     if(validatableInput.required)
@@ -162,7 +162,7 @@ function validate2(validatableInput:Validatable){
     return isValid;
 }
 
-function autobind5(_:any, _2:string, descriptor:PropertyDescriptor){
+function autobind6(_:any, _2:string, descriptor:PropertyDescriptor){
     const originalMethod = descriptor.value;
     const adjDescriptor: PropertyDescriptor = {
         configurable:true,
