@@ -1,115 +1,54 @@
 /*
-I want to work on these types here that any type I'm using here for my assigned projects, 
-for the listeners here and also for the projects in the project state.
-Of course, here.I don't really want to work with any.It would make more sense to have a 
-dedicated project class or project type which we can use, and indeed I will create a class 
-for that. Project Type.
+e got two issues if we want to call them like that to fix.Now, I want to start with the 
+issue that projects show up in both boxes.I want to introduce some filtering and the best 
+place to filter is, of course, our listener function.
 
-Simply by using class project so that we have a way of building project objects which always 
-have the same structure.Right now I'm doing it down there with the literal notation.
-The downside of that, of course, is that we have to remember that it's description and not 
-desk, that we need an ID, which is a string and so on.So that's where a custom type can help us.
-
-And I'll create a class and not an interface or a custom type with the type keyword 
-because I want to be able to instantiate it.
 */
 
 /*
-01 - creating a class - Simply by using class project so that we have a way of building 
-project objects which always have the same structure.
-Now I want to add a status to a project which of course can be changed so that we actually 
-can filter for active projects in the first box and finish projects in the second box so 
-that we only show the right projects in every box.
 
-And now the question, of course, is which type should this status have?
-
-Now we could use a union type with two literal types active and finished what we used earlier already.
-
-But here I also want to introduce or reintroduce another type we learned about, and that's the enum.
-
-The enum is perfect here because we have exactly two options.
 */
 
-enum ProjectStatus {
+enum ProjectStatus1 {
     Active ,
     Finished
 }
 
-class Project{
+class Project1{
     constructor(
         public id:string, 
         public title:string,
         public description:string,
         public people:number, 
-        public status:ProjectStatus 
-        ){
-
-        }
+        public status:ProjectStatus1 
+        ){}
 }
 
-/*
-05 - we also have the listener here, and for that I'll add a new custom type listener because 
-I want to basically encode a function type with one word.
-So what do I mean with that?
+type Listener1 = (items:Project1[]) => void;
 
-Well, of course, a listener here in our application, it's just a function, right?What we 
-store in the listeners array is just a bunch of functions. Add listener pushes a new 
-function and when something changes, we execute that function.So here a listener is really 
-just a function, but it is a function that receives our. Items, certain items, in our case, 
-an array of projects.
-
-And that then does something with it.Now, to be precise here, of course, to define a 
-function type, we don't have curly braces here,but instead, as you learn the return type 
-and that will be wide, which means we don't care about any value that listener function 
-might return in the place where we work with listeners.
-
-We don't need any return type.
-We just want to ensure that whoever passes us.Such a listener expects to get some items 
-when the listener fires. With that here we can say that listeners is an array of listener 
-well functions in the end.
-*/
-type Listener = (items:Project[]) => void;
-
-
-/*
-02 - This is now my project class.
-With that here we can say that this is an array of projects using that project class.
-*/
 // Project State Management.
-class ProjectState1{
-    // private projects: any[] = [];
-    // private listeners:any[] = [];
-
-    private projects: Project[] = [];
-    private listeners:Listener[] = [];
+class ProjectState2{
+    private projects: Project1[] = [];
+    private listeners:Listener1[] = [];
     
-   private static instance1:ProjectState1;
+   private static instance1:ProjectState2;
    private constructor(){
    }
 
    static getInstance(){
     if(this.instance1) return this.instance1;
 
-    this.instance1 = new ProjectState1();
+    this.instance1 = new ProjectState2();
     return this.instance1;
    }
-    /*
-    03- when we create a project here, we do that by using new project whoops project, not
-    project state.And here to project we forward an ID in this case, as mentioned before, 
-    a random number which we convert to a string, then the title, then the description, 
-    then the number of people here and then also of course, that status.
     
-    And one thing I want to have here in this application and this demo project is that every 
-    new project by default is active.
-    */
-
     addProject(title:string,description:string,numOfPeople:number){
-        const newProject = new Project(
+        const newProject = new Project1(
             Math.random().toString(),
             title,
             description,
             numOfPeople,
-            ProjectStatus.Active
+            ProjectStatus1.Active
         );
 
         this.projects.push(newProject);
@@ -117,17 +56,14 @@ class ProjectState1{
             listenerFn(this.projects.slice())
         }
     }
-    /*
-    06 - And here, when I push listener function, I need to make clear that it's not just 
-    any function, but that is of type listener.
-    */
-    addListener(ListenerFn: Listener){
+    
+    addListener(ListenerFn: Listener1){
         this.listeners.push(ListenerFn);
     }
 
 }
 
-const projectState1 = ProjectState1.getInstance();
+const projectState2 = ProjectState2.getInstance();
 
 
 interface Validatable {
@@ -139,7 +75,7 @@ interface Validatable {
     max?:number;
 }
 
-function validate4(validatableInput:Validatable){
+function validate2(validatableInput:Validatable){
     let isValid = true;
 
     if(validatableInput.required)
@@ -160,7 +96,7 @@ function validate4(validatableInput:Validatable){
     return isValid;
 }
 
-function autobind7(_:any, _2:string, descriptor:PropertyDescriptor){
+function autobind5(_:any, _2:string, descriptor:PropertyDescriptor){
     const originalMethod = descriptor.value;
     const adjDescriptor: PropertyDescriptor = {
         configurable:true,
@@ -173,24 +109,27 @@ function autobind7(_:any, _2:string, descriptor:PropertyDescriptor){
     return adjDescriptor;
 }
 
-/*
-04 - now there's one other place where we need the project class and that 
-is here in the project list class.
-
-There we have the assigned projects property and of course that should also be an array of
-projects. Now with that we're using better typing and one advantage is that here in render 
-projects, we now also get all the completion here, for example, and we would also get 
-an error, a compilation error if we try to save that because now it types could understands 
-with which types we're working here.
-*/
 
 //ProjectList Class
-class ProjectList2 {
+class ProjectList3 {
     templateElement: HTMLTemplateElement;
     hostElement: HTMLDivElement;
     element: HTMLElement;
-    assignedProjects:Project[];
+    assignedProjects:Project1[];
 
+    /*
+    01 - If we go to the place where we register our listener.Here in the project list class.
+    Then here we get a list of projects.Right now that list of projects comprises all projects.
+    Now inside of the project list class.However, we're only interested in active or finished 
+    projects.Now here, by the way, we could also theoretically use our enum, but actually.
+
+    I need the concrete values stored in the enum down there or in the type down there, and 
+    therefore here.
+    
+    02 - I don't want to use a enum also because I want to show the string literal 
+    types.So what we'll do here inside of our listener function is before we store the 
+    project and render them we want to filter them.
+    */
     constructor(private type: 'active' | 'finished'){
         this.templateElement = document.getElementById('project-list')! as HTMLTemplateElement;
         this.hostElement = document.getElementById('app')! as HTMLDivElement;
@@ -199,13 +138,14 @@ class ProjectList2 {
         this.element.id = `${type}-projects`;
         this.assignedProjects = [];
 
-         /*
-        07 - Then everything works now in the place where we use ADD listener, which is down 
-        there.We now also of course can enhance our typing and make it clear that here we 
-        will actually get a bunch of projects.
-        */
-        projectState1.addListener((projects:Project[])=>{
-            this.assignedProjects = projects;
+        projectState2.addListener((projects:Project1[])=>{
+            const relevantProjects = projects.filter(prj => {
+                if(this.type === 'active')
+                    return prj.status === ProjectStatus1.Active;
+                else return prj.status === ProjectStatus1.Finished;
+            });
+            //With that, we get our relevant project, which we can now store here in assigned projects.
+            this.assignedProjects = relevantProjects;
             this.renderProjects();
         })
 
@@ -225,10 +165,30 @@ class ProjectList2 {
             this.type.toUpperCase() + ' PROJECTS';
     }
 
-    
+   /*
+   02 - This works and you see it only added to active projects not to finish projects.
+    However, if I add a second project here, we still have that duplication going on now 
+    that's related to how we render our projects.Instead of render projects, we always go 
+    through all our project items and append them to the list.Now the problem with that, 
+    of course, is that we already might have a project item rendered out onto the screen.
+
+    Now, the best possible solution here would be to kind of run some comparison where 
+    you check what has already been rendered and what you need to render to avoid 
+    unnecessary rendering. However, running this comparison by looking at the real 
+    dom, all the costs, quite a bit of performance for this application here.
+
+    It's therefore perfectly fine to simply take our list element and clear all its 
+    content by setting inner HTML to an empty string, which means we get rid of all 
+    list items and then re render.That means that whenever we add a new project, we re 
+    render all projects.
+
+    But for the purpose of this project here, for this application here, that is 
+    absolutely fine.So now with that, if we save that, let's give it another try.
+   */
    private renderProjects(){
 
     const listEl = document.getElementById(`${this.type}-projects-list`) as HTMLUListElement;
+    listEl.innerHTML = '';
     for(const prjItem of this.assignedProjects){
         const listItem = document.createElement('li');
         listItem.textContent = prjItem.title;
@@ -238,7 +198,7 @@ class ProjectList2 {
 }
 
 // ProjectInput Class    
-class ProjectInput7{
+class ProjectInput8{
     templateElement: HTMLTemplateElement;
     hostElement: HTMLDivElement;
     element: HTMLFormElement;
@@ -270,7 +230,7 @@ class ProjectInput7{
     this.element.addEventListener('submit',this.submitHandler);
     }
 
-    @autobind7
+    @autobind5
     private submitHandler(event:Event){
     event.preventDefault();
 
@@ -278,7 +238,7 @@ class ProjectInput7{
     if(Array.isArray(userInput)){
         const [title, desc, people] = userInput;
        
-        projectState1.addProject(title,desc,people);
+        projectState2.addProject(title,desc,people);
         this.clearInputs();
         }
     }
@@ -307,9 +267,9 @@ class ProjectInput7{
         }
         
         if(
-            !validate4(titleValidatable) ||
-            !validate4(descriptionValidatable) ||
-            !validate4(peopleValidatable)
+            !validate2(titleValidatable) ||
+            !validate2(descriptionValidatable) ||
+            !validate2(peopleValidatable)
         ){
             alert('Invalid input, Please try again!');
             return;
@@ -325,7 +285,7 @@ class ProjectInput7{
     }
 }
     
-    const prjInput7 = new ProjectInput7();
+    const prjInput8 = new ProjectInput8();
     
-    const activePrjList2 = new ProjectList2('active');
-    const finishedPrjList2 = new ProjectList2('finished');
+    const activePrjList3 = new ProjectList3('active');
+    const finishedPrjList3 = new ProjectList3('finished');
