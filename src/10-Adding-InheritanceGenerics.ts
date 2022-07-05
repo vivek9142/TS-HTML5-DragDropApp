@@ -117,7 +117,7 @@ interface Validatable {
     max?:number;
 }
 
-function validate3(validatableInput:Validatable){
+function validate3ih(validatableInput:Validatable){
     let isValid = true;
 
     if(validatableInput.required)
@@ -138,7 +138,7 @@ function validate3(validatableInput:Validatable){
     return isValid;
 }
 
-function autobind7(_:any, _2:string, descriptor:PropertyDescriptor){
+function autobind7if(_:any, _2:string, descriptor:PropertyDescriptor){
     const originalMethod = descriptor.value;
     const adjDescriptor: PropertyDescriptor = {
         configurable:true,
@@ -427,7 +427,7 @@ class ProjectInput9 extends Component<HTMLDivElement,HTMLFormElement>{
 
     renderContent(): void {}
 
-    @autobind7
+    @autobind7if
     private submitHandler(event:Event){
     event.preventDefault();
 
@@ -464,9 +464,9 @@ class ProjectInput9 extends Component<HTMLDivElement,HTMLFormElement>{
         }
         
         if(
-            !validate3(titleValidatable) ||
-            !validate3(descriptionValidatable) ||
-            !validate3(peopleValidatable)
+            !validate3ih(titleValidatable) ||
+            !validate3ih(descriptionValidatable) ||
+            !validate3ih(peopleValidatable)
         ){
             alert('Invalid input, Please try again!');
             return;
