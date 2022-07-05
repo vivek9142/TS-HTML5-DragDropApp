@@ -160,7 +160,7 @@ function validate4(validatableInput:Validatable){
     return isValid;
 }
 
-function autobind7(_:any, _2:string, descriptor:PropertyDescriptor){
+function autobind7i(_:any, _2:string, descriptor:PropertyDescriptor){
     const originalMethod = descriptor.value;
     const adjDescriptor: PropertyDescriptor = {
         configurable:true,
@@ -270,7 +270,7 @@ class ProjectInput7{
     this.element.addEventListener('submit',this.submitHandler);
     }
 
-    @autobind7
+    @autobind7i
     private submitHandler(event:Event){
     event.preventDefault();
 

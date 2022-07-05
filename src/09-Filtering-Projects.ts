@@ -75,7 +75,7 @@ interface Validatable {
     max?:number;
 }
 
-function validate2(validatableInput:Validatable){
+function validate2q(validatableInput:Validatable){
     let isValid = true;
 
     if(validatableInput.required)
@@ -267,9 +267,9 @@ class ProjectInput8{
         }
         
         if(
-            !validate2(titleValidatable) ||
-            !validate2(descriptionValidatable) ||
-            !validate2(peopleValidatable)
+            !validate2q(titleValidatable) ||
+            !validate2q(descriptionValidatable) ||
+            !validate2q(peopleValidatable)
         ){
             alert('Invalid input, Please try again!');
             return;
