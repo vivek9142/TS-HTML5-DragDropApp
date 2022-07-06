@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "lite-server",
-    "ts-compile":"tsc --w"
+    "ts":"tsc --w"
   },
   "keywords": [
     "typescript",
