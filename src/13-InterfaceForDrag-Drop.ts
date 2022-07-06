@@ -41,28 +41,21 @@ interface Draggable{
 
 interface DragTarget{
     /*
-    Now you need to implement a drag over handler when implementing drag and drop in JavaScript to basically
+    Now you need to implement a drag over handler when implementing drag and drop in 
+    JavaScript to basically signal the browser and JavaScript that the thing you're dragging 
+    something over is a valid drag target.
+    If you don't do the right thing in the drag over, handler dropping will not be possible.
+    You need the drop handler then to react to the actual drop that happens. So if the drag 
+    over handler will permit to drop with the drop, handler will handle the drop.And then 
+    here we can update our data and UI, for example, and the drag live handler can be useful
+    if we're, for example, giving some visual feedback to the user when he or she drag 
+    something over the box, for example, we change the background color.
 
-signal the browser and JavaScript that the thing you're dragging something over is a valid drag target.
-
-If you don't do the right thing in the drag over, handler dropping will not be possible.
-
-You need the drop handler then to react to the actual drop that happens.
-
-So if the drag over handler will permit to drop with the drop, handler will handle the drop.
-
-And then here we can update our data and UI, for example, and the drag live handler can be useful
-
-if we're, for example, giving some visual feedback to the user when he or she drag something over
-
-the box, for example, we change the background color.
-
-Well, if no drop happens and instead it's cancelled or the user moves the element away, we can use
-
-the drag leaf handler to revert our visual update.
-
-Now all three handlers, all the receive a drag event and don't return anything.
+    Well, if no drop happens and instead it's cancelled or the user moves the element away, 
+    we can use the drag leaf handler to revert our visual update.Now all three handlers, 
+    all the receive a drag event and don't return anything.
     */
+   
     dragOverHandler(event:DragEvent):void;
     dropHandler(event:DragEvent):void;
     dragLeaveHandler(event:DragEvent):void;
