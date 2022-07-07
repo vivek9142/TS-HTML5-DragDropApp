@@ -1,20 +1,12 @@
 /*
-Visually we are able to drag and drop.
-
-But technically in JavaScript, of course, our script has no idea of what's happening to us humans.
-
-Of course it's clear that we're dragging this exact item here, but if we have a look at our code,
-
-how would JavaScript know what's getting dragged?
-
-Where?
-
-How would we update our state?
-
+Visually we are able to drag and drop. But technically in JavaScript, of course, our script 
+has no idea of what's happening to us humans.Of course it's clear that we're dragging this 
+exact item here, but if we have a look at our code, how would JavaScript know what's getting 
+dragged? Where?How would we update our state?
 Based on the information we have right now, it wouldn't really be possible.
-
-So to make that work in JavaScript, we have to go back to the class of our drag item, the project
-item there in the drag start handler logging the event to the console isn't everything we should do.
+So to make that work in JavaScript, we have to go back to the class of our drag item, the 
+project item there in the drag start handler logging the event to the console isn't 
+everything we should do.
 */
 
 //Drag & Drop Interfaces
