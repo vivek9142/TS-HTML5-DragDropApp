@@ -1,5 +1,4 @@
-/*
-*/
+
 
 //Drag & Drop Interfaces
 interface Draggable{
@@ -14,36 +13,36 @@ interface Draggable{
  }
  
  //Project Type
- enum ProjectStatus7 {
+ enum ProjectStatus8 {
      Active ,
      Finished
  }
  
- class Project8{
+ class Project9{
      constructor(
          public id:string, 
          public title:string,
          public description:string,
          public people:number, 
-         public status:ProjectStatus7 
+         public status:ProjectStatus8 
          ){}
  }
  
- type Listener7<T> = (items:T[]) => void;
+ type Listener8<T> = (items:T[]) => void;
  
- class State5<T> {
-     protected listeners:Listener7<T>[] = [];
+ class State6<T> {
+     protected listeners:Listener8<T>[] = [];
  
-     addListener(ListenerFn: Listener7<T>){
+     addListener(ListenerFn: Listener8<T>){
          this.listeners.push(ListenerFn);
      }
  }
  
  // Project State Management.
- class ProjectState8 extends State5<Project8>{
-     private projects: Project8[] = [];
+ class ProjectState9 extends State6<Project9>{
+     private projects: Project9[] = [];
      
-    private static instance1:ProjectState8;
+    private static instance1:ProjectState9;
     private constructor(){
     super();
     }
@@ -51,29 +50,74 @@ interface Draggable{
     static getInstance(){
      if(this.instance1) return this.instance1;
  
-     this.instance1 = new ProjectState8();
+     this.instance1 = new ProjectState9();
      return this.instance1;
     }
      
      addProject(title:string,description:string,numOfPeople:number){
-         const newProject = new Project8(
+         const newProject = new Project9(
              Math.random().toString(),
              title,
              description,
              numOfPeople,
-             ProjectStatus7.Active
+             ProjectStatus8.Active
          );
  
          this.projects.push(newProject);
-         
-         for(const  listenerFn of this.listeners){
-             listenerFn(this.projects.slice())
-         }
+         this.updateListeners();
+        //  for(const  listenerFn of this.listeners){
+        //      listenerFn(this.projects.slice())
+        //  }
+     }
+
+     /*
+    02 - And with that, the goal is to really move the project now or change the project 
+    status, to be precise.Now, how can we do that?Well, in our state, I would say in our 
+    project state. Where we currently have a at project method.
+    We also need a move project method and the goal of this method will be to basically 
+    switch the status of a project.
+
+    So instead in MOVE project, we really have to know which project you move and which box 
+    the new box is.So which status the new status is.
+    So I expect to get the project ID here, which should be a string.And the new status and 
+    the new status here, of course, can be of type project status.And then inside of Move 
+    Project. I want to find a project with that ID in my array of projects.So here in this 
+    array of projects and then flip it's status.
+     */
+
+     moveProject(projectId:string,newStatus: ProjectStatus8){
+        const project = this.projects.find(prj => prj.id === projectId);
+        
+        //06 - we can check for state change if not changed then no updating the DOM
+        // if(project)
+        if(project && project.status !== newStatus)
+        {
+            project.status = newStatus;
+            //04 - here only if we change anything we'll update the listeners.
+            this.updateListeners();
+        }
+     }
+
+     /*
+     03 - This will already change the object in the array and we're basically done with it.Of 
+     course, however, we're not entirely done.We now need to let everyone know, all our 
+     listeners, that something changed about our projects and that they should re render.
+    
+     So we have to go through all listeners again.And since we would repeat code here, 
+     I will outsource this in a new private method.Update Listeners could be a viable name 
+     and in there I'll have this for loop where we go through all listeners and do something.
+     And then I will call this update listeners both from the ad project and also from the 
+     MOVE Project method here.
+     */
+     private updateListeners(){
+        for(const  listenerFn of this.listeners){
+            listenerFn(this.projects.slice())
+        }
      }
      
  }
  
- const projectState8 = ProjectState8.getInstance();
+ const projectState9 = ProjectState9.getInstance();
  
  
  interface Validatable {
@@ -85,7 +129,7 @@ interface Draggable{
      max?:number;
  }
  
- function validate7g(validatableInput:Validatable){
+ function validate8g(validatableInput:Validatable){
      let isValid = true;
  
      if(validatableInput.required)
@@ -106,7 +150,7 @@ interface Draggable{
      return isValid;
  }
  
- function autobind11j(_:any, _2:string, descriptor:PropertyDescriptor){
+ function autobind12j(_:any, _2:string, descriptor:PropertyDescriptor){
      const originalMethod = descriptor.value;
      const adjDescriptor: PropertyDescriptor = {
          configurable:true,
@@ -121,7 +165,7 @@ interface Draggable{
  
  
  //Component Base Class
- abstract class Component5<T extends HTMLElement,U extends HTMLElement> {
+ abstract class Component6<T extends HTMLElement,U extends HTMLElement> {
      templateElement: HTMLTemplateElement;
      hostElement: T;
      element: U;
@@ -150,8 +194,8 @@ interface Draggable{
  }
  
  //ProjectItem Class
- class ProjectItem4 extends Component5<HTMLUListElement,HTMLLIElement> implements Draggable {
- private project: Project8;
+ class ProjectItem5 extends Component6<HTMLUListElement,HTMLLIElement> implements Draggable {
+ private project: Project9;
  
  
  get persons(){
@@ -159,7 +203,7 @@ interface Draggable{
      else return `${this.project.people} Persons`
  }
  
- constructor(hostId:string,project: Project8){
+ constructor(hostId:string,project: Project9){
      super('single-project',hostId,false,project.id);
      this.project = project;
  
@@ -167,13 +211,13 @@ interface Draggable{
      this.renderContent();
      }
      
-     @autobind11j
+     @autobind12j
      dragStartHandler(event: DragEvent): void {
         event.dataTransfer!.setData('text/plain',this.project.id);
         event.dataTransfer!.effectAllowed = 'move'
      }
  
-     @autobind11j
+     @autobind12j
      dragEndHandler(_: DragEvent): void {
          console.log('dragend')
      }
@@ -189,16 +233,12 @@ interface Draggable{
          this.element.querySelector('p')!.textContent = this.project.description;
      }
  }
- 
- /*
- Now that step number one, let's now go back to the place where we want the drop to happen, 
- which is the project list there.
- */
+
 
 
  //ProjectList Class
- class ProjectList9 extends Component5<HTMLDivElement,HTMLElement> implements DragTarget{
-     assignedProjects:Project8[];
+ class ProjectList10 extends Component6<HTMLDivElement,HTMLElement> implements DragTarget{
+     assignedProjects:Project9[];
  
      constructor(private type: 'active' | 'finished'){
          super('project-list','app',false,`${type}-projects`)
@@ -209,7 +249,7 @@ interface Draggable{
          this.renderContent();
      }
  
-     @autobind11j
+     @autobind12j
      dragOverHandler(event: DragEvent){
         if(event.dataTransfer && event.dataTransfer.types[0] === 'text/plain')
         {
@@ -218,12 +258,28 @@ interface Draggable{
             listEl.classList.add('droppable');
         }
      }
+     /*
+    02 - So of course, our goal is not to just log that idea. Instead, I want to extract 
+    the project ID here in the lock in the drop handler.
 
-     @autobind11j
+    05 - We can now use the project state, call, move, project and pass in the project ID 
+    and now the new project status and the new project status depends on the list on which 
+    we drop this.So I want to auto bind.My drop handler so that this keyword in the drop 
+    handler refers to the surrounding class.And this surrounding class is a project list 
+    which, if you remember, will have a type property.Here we're storing it.
+    Here we're having a type property and that is active or finished.So now we just have to 
+    translate active or finished to our enum values.So here I pass in this dot type and I 
+    check if it's equal to active, in which case we pass in project status dot active as 
+    the new status of the project because that is the status of the list we moved the
+    project to.
+    */
+     @autobind12j
      dropHandler(event: DragEvent){   
-        console.log(event.dataTransfer!.getData('text/plain'));
+        const prjId = event.dataTransfer!.getData('text/plain');
+        projectState9.moveProject(prjId,
+            this.type === 'active' ? ProjectStatus8.Active : ProjectStatus8.Finished);
      }
-     @autobind11j
+     @autobind12j
      dragLeaveHandler(_: unknown){
          const listEl = this.element.querySelector('ul')!;
          listEl.classList.remove('droppable');
@@ -241,11 +297,11 @@ interface Draggable{
          this.element.addEventListener('dragleave',this.dragLeaveHandler);
          this.element.addEventListener('drop',this.dropHandler);
          
-         projectState8.addListener((projects:Project8[])=>{
+         projectState9.addListener((projects:Project9[])=>{
              const relevantProjects = projects.filter(prj => {
                  if(this.type === 'active')
-                     return prj.status === ProjectStatus7.Active;
-                 else return prj.status === ProjectStatus7.Finished;
+                     return prj.status === ProjectStatus8.Active;
+                 else return prj.status === ProjectStatus8.Finished;
              });
  
              this.assignedProjects = relevantProjects;
@@ -258,14 +314,14 @@ interface Draggable{
      const listEl = document.getElementById(`${this.type}-projects-list`) as HTMLUListElement;
      listEl.innerHTML = '';
      for(const prjItem of this.assignedProjects){
-         new ProjectItem4(this.element.querySelector('ul')!.id,prjItem);
+         new ProjectItem5(this.element.querySelector('ul')!.id,prjItem);
      }
     }
  }
  
  
  // ProjectInput Class    
- class ProjectInput14 extends Component5<HTMLDivElement,HTMLFormElement>{
+ class ProjectInput15 extends Component6<HTMLDivElement,HTMLFormElement>{
      titleInputElement: HTMLInputElement;
      descriptionInputElement:HTMLInputElement;
      peopleInputElement: HTMLInputElement;
@@ -286,7 +342,7 @@ interface Draggable{
  
      renderContent(): void {}
  
-     @autobind11j
+     @autobind12j
      private submitHandler(event:Event){
      event.preventDefault();
  
@@ -294,7 +350,7 @@ interface Draggable{
      if(Array.isArray(userInput)){
          const [title, desc, people] = userInput;
         
-         projectState8.addProject(title,desc,people);
+         projectState9.addProject(title,desc,people);
          this.clearInputs();
          }
      }
@@ -323,9 +379,9 @@ interface Draggable{
          }
          
          if(
-             !validate7g(titleValidatable) ||
-             !validate7g(descriptionValidatable) ||
-             !validate7g(peopleValidatable)
+             !validate8g(titleValidatable) ||
+             !validate8g(descriptionValidatable) ||
+             !validate8g(peopleValidatable)
          ){
              alert('Invalid input, Please try again!');
              return;
@@ -341,7 +397,7 @@ interface Draggable{
      }
  }
      
-     const prjInput14 = new ProjectInput14();
+     const prjInput15 = new ProjectInput15();
      
-     const activePrjList9 = new ProjectList9('active');
-     const finishedPrjList9 = new ProjectList9('finished');
+     const activePrjList10 = new ProjectList10('active');
+     const finishedPrjList10 = new ProjectList10('finished');
