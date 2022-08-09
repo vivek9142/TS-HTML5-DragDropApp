@@ -19,5 +19,5 @@ export class Project10{
         public people:number, 
         public status:ProjectStatus10 
         ){}
-}
+    }
 }
