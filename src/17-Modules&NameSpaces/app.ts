@@ -1,32 +1,100 @@
+/// <reference path="drag-drop-interfaces.ts" />
+/// <reference path="project-model.ts" />
+//12. import project model.ts file
+
+/* We'll implement namespaces feature for dividing and managing the codespace.
+   This feature is created for TypeScript only.
+
+   1. we'll cut and past the drag and drop interfaces to another file drag-drop-interfaces
+
+   8.Let's go back to the top of apts and now here you add three forward slashes important 
+   free not just to you because this is actually not a normal comment what we're creating 
+   now. This will actually be syntax picked up by TypeScript.
+
+    A special comment you could say TypeScript understands if it starts with three slashes 
+    there, you write a self closing XML tag, so opening angle bracket, then forward slash 
+    closing angle bracket and in there reference path equals. And then here the name of 
+    the file you want to import. In my case here drag. Drop interfaces dots.
+
+    Now this is understood and picked up by TypeScript because as I mentioned with the 
+    free starting slashes is a special syntax. TypeScript understands just as it 
+    understands this reference thing.
+*/
 
 
-//Drag & Drop Interfaces
-interface Draggable1{
-    dragStartHandler(event:DragEvent):void;
-    dragEndHandler(event:DragEvent):void;
- }
+    /*
+    9. However, if you scroll down you'll see my editor still complains and if we try to 
+    save this, we also get compilation errors so it doesn't seem to be available. The 
+    Dragonball interface doesn't seem to be available here. Well, there is a special 
+    thing about namespaces. You can use them to split your code.
+
+    And remember when I said earlier that what you have in the namespace can be used from 
+    anywhere in that namespace? Well, it turns out you can split namespaces across multiple 
+    files by exporting things in a namespace and then using this special import syntax.
+
+    But you then have to put the things that want to use something from that imported 
+    namespace or from that imported file into the same namespace. Hence maybe dead 
+    interfaces is not the best name. Maybe we just name this app.
+
+    Now, if we name this app here, we can go to APTs and create a namespace of the same 
+    name here namespace app. And now for a moment let's put everything here into that 
+    namespace and now you see the error is gone. There are no red dots on the right.
+
+    However, if I save that, I still get errors here.
+    The question just is, what's the result of this compilation? Do we have one or two files 
+    now? Well, let's have a look at the dist folder and there you see you've got an app JS 
+    file and then some code here and a drag and drop interface JS file.
+
+    So we got two files as a result. Now the drag and drop interface file actually is 
+    pretty empty because you learned that interfaces are basically not compiled to anything.
+
+    There is no JavaScript equivalent for an interface. It's a pure TypeScript feature, 
+    so we can import it with the TypeScript syntax here to use it and get all the type 
+    improvements we learned. But in production, it doesn't matter if it's in a 
+    separate file or not.
+    */
+
+    /*
+    13. The question is, does our application now work for that? Let's try adding a project 
+    here.And you see, we get an error category property active of undefined. The reason for 
+    that simply is that our files are compiled.Stand alone.Namespaces exist in TypeScript 
+    world.
+
+    As I said, there is no JavaScript equivalence for it. So the problem we have here is 
+    that in TypeScript the world, everything is great because TypeScript is able to find 
+    all the things we need.
+
+    For example, when I say project here, when I reference the project, type here on the 
+    project state class, this project type, this project class is defined in the project 
+    model. Now TypeScript does not complain during compilation because we import that model, 
+    but import here really just means we tell TypeScript where to find that type. Once it is 
+    compiled to JavaScript, this connection is basically destroyed.
+    
+    So in JavaScript code, when this executes and when we then try to create a new project 
+    by instantiating project, JavaScript doesn't find this project class or constructor 
+    function, so we have to make sure we carry over this connection and for that we can go 
+    to the config and they are set this out file option, we can comment this in and the idea 
+    behind the old file is that you tell TypeScript that it should concatenate namespaces.
+    So these references which it has during compilation into one single JavaScript file 
+    instead of compiling multiple JavaScript files.
+
+    So here for our file we can say we want to have a file in the dist folder which we name 
+    may be bundledjs.And if we do that and save that, we'll actually get an error here.
+    That only AMD and system modules are supported alongside outfall.
+
+    There basically are different ways of loading or of bundling different JavaScript files 
+    into one for historic reasons and how it is all developed.So basically what we need to 
+    do here is we need to set module which is already highlighted as an error here, not 
+    to common JS but to AMD for example.If we do that, it compiles without issues, 
+    even though it still complains here.But it didn't pick up that I changed it.
+
+    you see only that bundled js file is generated.This file will hold all our code in 
+    the compiled and translated version and therefore now in indexed HTML, we just have 
+    to import bundle js here instead of app js.
+    */
  
- interface DragTarget1{
-     dragOverHandler(event:DragEvent):void;
-     dropHandler(event:DragEvent):void;
-     dragLeaveHandler(event:DragEvent):void;
- }
- 
- //Project Type
- enum ProjectStatus10 {
-     Active ,
-     Finished
- }
- 
- class Project10{
-     constructor(
-         public id:string, 
-         public title:string,
-         public description:string,
-         public people:number, 
-         public status:ProjectStatus10 
-         ){}
- }
+ namespace App{
+    //10. copy n paste the project enum n class paste in projectmodel.ts
  
  type Listener9<T> = (items:T[]) => void;
  
@@ -67,22 +135,7 @@ interface Draggable1{
          this.updateListeners();
      }
 
-     /*
-    02 - And with that, the goal is to really move the project now or change the project 
-    status, to be precise.Now, how can we do that?Well, in our state, I would say in our 
-    project state. Where we currently have a at project method.
-    We also need a move project method and the goal of this method will be to basically 
-    switch the status of a project.
-
-    So instead in MOVE project, we really have to know which project you move and which box 
-    the new box is.So which status the new status is.
-    So I expect to get the project ID here, which should be a string.And the new status and 
-    the new status here, of course, can be of type project status.And then inside of Move 
-    Project. I want to find a project with that ID in my array of projects.So here in this 
-    array of projects and then flip it's status.
-     */
-
-     moveProject(projectId:string,newStatus: ProjectStatus10){
+    moveProject(projectId:string,newStatus: ProjectStatus10){
         const project = this.projects.find(prj => prj.id === projectId);
         
         //06 - we can check for state change if not changed then no updating the DOM
@@ -95,22 +148,11 @@ interface Draggable1{
         }
      }
 
-     /*
-     03 - This will already change the object in the array and we're basically done with it.Of 
-     course, however, we're not entirely done.We now need to let everyone know, all our 
-     listeners, that something changed about our projects and that they should re render.
-    
-     So we have to go through all listeners again.And since we would repeat code here, 
-     I will outsource this in a new private method.Update Listeners could be a viable name 
-     and in there I'll have this for loop where we go through all listeners and do something.
-     And then I will call this update listeners both from the ad project and also from the 
-     MOVE Project method here.
-     */
-     private updateListeners(){
+    private updateListeners(){
         for(const  listenerFn of this.listeners){
             listenerFn(this.projects.slice())
         }
-     }
+    }
      
  }
  
@@ -255,21 +297,7 @@ interface Draggable1{
             listEl.classList.add('droppable');
         }
      }
-     /*
-    02 - So of course, our goal is not to just log that idea. Instead, I want to extract 
-    the project ID here in the lock in the drop handler.
-
-    05 - We can now use the project state, call, move, project and pass in the project ID 
-    and now the new project status and the new project status depends on the list on which 
-    we drop this.So I want to auto bind.My drop handler so that this keyword in the drop 
-    handler refers to the surrounding class.And this surrounding class is a project list 
-    which, if you remember, will have a type property.Here we're storing it.
-    Here we're having a type property and that is active or finished.So now we just have to 
-    translate active or finished to our enum values.So here I pass in this dot type and I 
-    check if it's equal to active, in which case we pass in project status dot active as 
-    the new status of the project because that is the status of the list we moved the
-    project to.
-    */
+    
      @autobind13j
      dropHandler(event: DragEvent){   
         const prjId = event.dataTransfer!.getData('text/plain');
@@ -394,7 +422,7 @@ interface Draggable1{
      }
  }
      
-     const prjInput16 = new ProjectInput16();
-     
-     const activePrjList11 = new ProjectList11('active');
-     const finishedPrjList11 = new ProjectList11('finished');
+     new ProjectInput16();
+     new ProjectList11('active');
+     new ProjectList11('finished');
+}
